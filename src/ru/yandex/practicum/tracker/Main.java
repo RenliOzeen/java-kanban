@@ -1,3 +1,9 @@
+package ru.yandex.practicum.tracker;
+
+import ru.yandex.practicum.tracker.model.SubTask;
+import ru.yandex.practicum.tracker.model.Task;
+import ru.yandex.practicum.tracker.service.Manager;
+
 public class Main {
 
     public static void main(String[] args) {

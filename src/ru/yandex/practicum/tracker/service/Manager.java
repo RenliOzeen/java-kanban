@@ -1,3 +1,9 @@
+package ru.yandex.practicum.tracker.service;
+
+import ru.yandex.practicum.tracker.model.Epic;
+import ru.yandex.practicum.tracker.model.SubTask;
+import ru.yandex.practicum.tracker.model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,7 +55,7 @@ public class Manager {
      *
      * @param name    наименование задачи
      * @param details детали задачи
-     * @return объект класса Task
+     * @return объект класса ru.yandex.practicum.tracker.model.Task
      */
     public Task createTask(String name, String details) {
         Task task = new Task(name, details);
@@ -118,7 +124,7 @@ public class Manager {
      * метод для обновления SubTasks с логикой проверки +\
      * и изменения статуса эпика
      *
-     * @param subTask  объект класса SubTask
+     * @param subTask  объект класса ru.yandex.practicum.tracker.model.SubTask
      * @param epicName название эпика, к которому принадлежит данный subTask
      * @param id       идентификатор subTask
      */

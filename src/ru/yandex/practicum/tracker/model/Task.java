@@ -1,3 +1,5 @@
+package ru.yandex.practicum.tracker.model;
+
 public class Task {
     private String name;
     private String details;
@@ -43,7 +45,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "ru.yandex.practicum.tracker.model.Task{" +
                 "name='" + name + '\'' +
                 ", details='" + details + '\'' +
                 ", id=" + id +

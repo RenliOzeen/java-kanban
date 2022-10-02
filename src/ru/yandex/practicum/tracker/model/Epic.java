@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package ru.yandex.practicum.tracker.model;
+
 import java.util.HashMap;
 
 
