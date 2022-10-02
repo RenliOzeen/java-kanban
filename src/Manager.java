@@ -14,26 +14,39 @@ public class Manager {
         epics = new HashMap<>();
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public ArrayList<Task> getTasks() {
+        ArrayList<Task> tasksList = new ArrayList<>();
+        for (int id : tasks.keySet()) {
+            tasksList.add(tasks.get(id));
+        }
+        return tasksList;
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public ArrayList<SubTask> getSubTasks() {
+        ArrayList<SubTask> subTasksList = new ArrayList<>();
+        for (int id : subTasks.keySet()) {
+            subTasksList.add(subTasks.get(id));
+        }
+        return subTasksList;
     }
 
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
+    public ArrayList<Epic> getEpics() {
+        ArrayList<Epic> epicList = new ArrayList<>();
+        for (int id : epics.keySet()) {
+            epicList.add(epics.get(id));
+        }
+        return epicList;
     }
 
     public int createId() {
-        id += 1;
+        id++;
         return id;
     }
 
     /**
      * Метод, создающий задачи
      * методы createEpic и createSubTask выполнен по аналогии
+     *
      * @param name    наименование задачи
      * @param details детали задачи
      * @return объект класса Task
@@ -69,20 +82,18 @@ public class Manager {
     }
 
     public void deleteTasks() {
-        for (int id : tasks.keySet()) {
-            tasks.remove(id);
-        }
+        tasks.clear();
     }
 
     public void deleteSubTasks() {
-        for (int id : subTasks.keySet()) {
-            subTasks.remove(id);
-        }
+        subTasks.clear();
     }
 
     public void deleteEpics() {
+        epics.clear();
+        subTasks.clear();
         for (int id : epics.keySet()) {
-            epics.remove(id);
+            epics.get(id).getSubTasks().clear();
         }
     }
 
@@ -106,9 +117,10 @@ public class Manager {
     /**
      * метод для обновления SubTasks с логикой проверки +\
      * и изменения статуса эпика
-     * @param subTask объект класса SubTask
+     *
+     * @param subTask  объект класса SubTask
      * @param epicName название эпика, к которому принадлежит данный subTask
-     * @param id идентификатор subTask
+     * @param id       идентификатор subTask
      */
     public void updateSubTask(SubTask subTask, String epicName, int id) {
         subTask.setId(id);
@@ -152,6 +164,13 @@ public class Manager {
 
     public void deleteSubTaskById(int id) {
         subTasks.remove(id);
+        for (int epicId : epics.keySet()) {
+            for (int subId : epics.get(epicId).getSubTasks().keySet()) {
+                if (subId == id) {
+                    epics.get(epicId).getSubTasks().remove(subId);
+                }
+            }
+        }
     }
 
     public HashMap getListSubsOfEpic(int epicId) {
