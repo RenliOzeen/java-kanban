@@ -1,14 +1,17 @@
 package ru.yandex.practicum.tracker.model;
 
+import ru.yandex.practicum.tracker.service.TaskStatus;
+
 public class Task {
     private String name;
     private String details;
     private int id;
-    private String status;
+    private TaskStatus status;
 
     public Task(String name, String details) {
         this.name = name;
         this.details = details;
+        status = TaskStatus.NEW;
     }
 
     public String getName() {
@@ -35,11 +38,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
