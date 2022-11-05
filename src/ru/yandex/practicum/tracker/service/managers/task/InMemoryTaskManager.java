@@ -9,6 +9,8 @@ import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id;
@@ -128,33 +130,18 @@ public class InMemoryTaskManager implements TaskManager {
      */
     @Override
     public Task getTaskById(int id) {
-        if (historyManager.getHistory().size() < 10) {
-            historyManager.add(tasks.get(id));
-        } else {
-            historyManager.getHistory().remove(0);
-            historyManager.add(tasks.get(id));
-        }
+        historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        if (historyManager.getHistory().size() < 10) {
-            historyManager.add(epics.get(id));
-        } else {
-            historyManager.getHistory().remove(0);
-            historyManager.add(epics.get(id));
-        }
+        historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     public SubTask getSubTaskById(int id) {
-        if (historyManager.getHistory().size() < 10) {
-            historyManager.add(subTasks.get(id));
-        } else {
-            historyManager.getHistory().remove(0);
-            historyManager.add(subTasks.get(id));
-        }
+        historyManager.add(subTasks.get(id));
         return subTasks.get(id);
     }
 
@@ -209,16 +196,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
     public void deleteEpicById(int id) {
+        historyManager.remove(id);
+        List<Integer> epicSubs = new ArrayList<>(epics.get(id).getSubTasks().keySet());
+        for (int num : epicSubs) {
+            historyManager.remove(num);
+        }
         epics.remove(id);
     }
 
     @Override
     public void deleteSubTaskById(int id) {
         subTasks.remove(id);
+        historyManager.remove(id);
         for (int epicId : epics.keySet()) {
             for (int subId : epics.get(epicId).getSubTasks().keySet()) {
                 if (subId == id) {
