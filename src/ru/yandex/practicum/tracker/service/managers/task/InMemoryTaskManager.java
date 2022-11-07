@@ -3,14 +3,14 @@ package ru.yandex.practicum.tracker.service.managers.task;
 import ru.yandex.practicum.tracker.model.Epic;
 import ru.yandex.practicum.tracker.model.SubTask;
 import ru.yandex.practicum.tracker.model.Task;
-import ru.yandex.practicum.tracker.service.TaskStatus;
+import ru.yandex.practicum.tracker.model.TaskStatus;
 import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class InMemoryTaskManager implements TaskManager {
     private int id;
@@ -28,8 +28,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    public List<Task> getHistoryManager() {
+        return historyManager.getHistory();
     }
 
     @Override
@@ -59,8 +59,11 @@ public class InMemoryTaskManager implements TaskManager {
         return epicList;
     }
 
-    @Override
-    public int createId() {
+    /**
+     * Метод, генерирующий уникальные идентификаторы для задач
+     * @return id типа int
+     */
+    private int createId() {
         id++;
         return id;
     }
@@ -69,7 +72,7 @@ public class InMemoryTaskManager implements TaskManager {
      * Метод, создающий задачи
      * методы createEpic и createSubTask выполнен по аналогии
      *
-     * @param name    наименование задачи
+     * @param name наименование задачи
      * @param details детали задачи
      * @return объект класса ru.yandex.practicum.tracker.model.Task
      */
@@ -97,7 +100,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (epics.get(id).getName().equals(epicName)) {
                 subTasks.put(subTask.getId(), subTask);
                 subTask.setEpicId(id);
-                epics.get(id).setSubTasks(subTask.getId(), subTask);
+                epics.get(id).setSubTasks(subTask.getId());
             }
         }
         return subTask;
@@ -166,7 +169,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int uid : epics.keySet()) {
             if (epics.get(uid).getName().equals(epicName)) {
                 subTask.setEpicId(uid);
-                epics.get(uid).setSubTasks(id, subTask);
+                epics.get(uid).setSubTasks(id);
                 if (subTask.getStatus() == TaskStatus.IN_PROGRESS) {
                     epics.get(uid).setStatus(TaskStatus.IN_PROGRESS);
                 }
@@ -174,8 +177,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
         for (int uid : epics.keySet()) {
             int count = 0;
-            for (int subId : epics.get(uid).getSubTasks().keySet()) {
-                if (epics.get(uid).getSubTasks().get(subId).getStatus() == TaskStatus.DONE) {
+            for (int subId : epics.get(uid).getSubTasks()) {
+                if (subTasks.get(subId).getStatus() == TaskStatus.DONE) {
                     count++;
                 }
                 if (count == epics.get(uid).getSubTasks().size()) {
@@ -202,7 +205,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpicById(int id) {
         historyManager.remove(id);
-        List<Integer> epicSubs = new ArrayList<>(epics.get(id).getSubTasks().keySet());
+        List<Integer> epicSubs = epics.get(id).getSubTasks();
         for (int num : epicSubs) {
             historyManager.remove(num);
         }
@@ -213,18 +216,16 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteSubTaskById(int id) {
         subTasks.remove(id);
         historyManager.remove(id);
-        for (int epicId : epics.keySet()) {
-            for (int subId : epics.get(epicId).getSubTasks().keySet()) {
-                if (subId == id) {
-                    epics.get(epicId).getSubTasks().remove(subId);
-                }
-            }
-        }
+        epics.get(subTasks.get(id).getEpicId()).getSubTasks().remove(id);
     }
 
     @Override
-    public HashMap getListSubsOfEpic(int epicId) {
-        return epics.get(id).getSubTasks();
+    public List<SubTask> getListSubsOfEpic(int epicId) {
+        List<SubTask> listSubsOfEpic = new ArrayList<>();
+        for (int subId : epics.get(epicId).getSubTasks()) {
+            listSubsOfEpic.add(subTasks.get(subId));
+        }
+        return listSubsOfEpic;
     }
 
 }

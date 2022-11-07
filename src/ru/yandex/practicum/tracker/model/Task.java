@@ -1,7 +1,5 @@
 package ru.yandex.practicum.tracker.model;
 
-import ru.yandex.practicum.tracker.service.TaskStatus;
-
 import java.util.Objects;
 
 public class Task {

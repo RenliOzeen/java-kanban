@@ -2,7 +2,9 @@ package ru.yandex.practicum.tracker.service.managers.history;
 
 import ru.yandex.practicum.tracker.model.Task;
 
-
+/**
+ * Служебный класс узла двусвязного списка для historyManager
+ */
 public class Node {
     Task data;
     Node next;

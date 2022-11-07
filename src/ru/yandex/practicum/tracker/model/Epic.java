@@ -1,22 +1,23 @@
 package ru.yandex.practicum.tracker.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Epic extends Task {
-    private final HashMap<Integer, SubTask> subTasks;
+    private final List<Integer> subTasks;
 
     public Epic(String name, String details) {
         super(name, details);
-        subTasks = new HashMap<>();
+        subTasks = new ArrayList<>();
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
+    public List<Integer> getSubTasks() {
         return subTasks;
     }
 
-    public void setSubTasks(int id, SubTask subTask) {
-        this.subTasks.put(id, subTask);
+    public void setSubTasks(int id) {
+        this.subTasks.add(id);
     }
 
 }

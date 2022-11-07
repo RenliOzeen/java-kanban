@@ -8,14 +8,13 @@ import java.util.List;
 
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final ArrayList<Task> viewsHistory;
+
     private final HashMap<Integer, Node> hashTable;
     private Node tail;
     private Node head;
     private int size = 0;
 
     public InMemoryHistoryManager() {
-        viewsHistory = new ArrayList<>();
         hashTable = new HashMap<>();
     }
 
@@ -26,12 +25,13 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (viewsHistory.contains(task)) {
-            removeNode(hashTable.get(task.getId()));
-            linkLast(task);
-        } else {
-            viewsHistory.add(task);
-            linkLast(task);
+        if (task != null) {
+            if (hashTable.containsKey(task.getId())) {
+                removeNode(hashTable.get(task.getId()));
+                linkLast(task);
+            } else {
+                linkLast(task);
+            }
         }
 
 
@@ -39,8 +39,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if (viewsHistory.contains(hashTable.get(id).data)) {
-            viewsHistory.remove(hashTable.get(id).data);
+        if (hashTable.containsKey(id)) {
             removeNode(hashTable.get(id));
         }
     }
@@ -73,14 +72,10 @@ public class InMemoryHistoryManager implements HistoryManager {
      */
     private List<Task> getTasks() {
         List<Task> historyList = new ArrayList<>();
-        Node curNode = hashTable.get(head.data.getId());
-        for (Node node : hashTable.values()) {
-            historyList.add(curNode.data);
-            if (curNode.next != null) {
-                curNode = curNode.next;
-            } else {
-                break;
-            }
+        Node node = head;
+        while (node != null) {
+            historyList.add(node.data);
+            node = node.next;
         }
         return historyList;
     }
