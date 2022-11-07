@@ -12,7 +12,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     private final HashMap<Integer, Node> hashTable;
     private Node tail;
     private Node head;
-    private int size = 0;
 
     public InMemoryHistoryManager() {
         hashTable = new HashMap<>();
@@ -32,6 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             } else {
                 linkLast(task);
             }
+            hashTable.put(task.getId(), tail);
         }
 
 
@@ -60,9 +60,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             oldTail.next = newTail;
             tail.prev = oldTail;
         }
-
-        size++;
-        hashTable.put(data.getId(), tail);
     }
 
     /**
@@ -86,18 +83,21 @@ public class InMemoryHistoryManager implements HistoryManager {
      * @param node узел типа Node, который необходимо вырезать
      */
     private void removeNode(Node node) {
-        if (hashTable.get(node.data.getId()).prev == null) {
-            hashTable.get(node.data.getId()).next.prev = null;
-            head = hashTable.get(node.data.getId()).next;
-        } else if (hashTable.get(node.data.getId()).next == null) {
-            hashTable.get(node.data.getId()).prev.next = null;
-            tail = hashTable.get(node.data.getId()).prev;
-        } else {
-            hashTable.get(node.data.getId()).next.prev = hashTable.get(node.data.getId()).prev;
-            hashTable.get(node.data.getId()).prev.next = hashTable.get(node.data.getId()).next;
+        Node nodeMap=hashTable.remove(node.data.getId());
+        if(nodeMap==null){
+            return;
+        } else{
+            if (nodeMap.prev == null) {
+                nodeMap.next.prev = null;
+                head = nodeMap.next;
+            } else if (nodeMap.next == null) {
+                nodeMap.prev.next = null;
+                tail = nodeMap.prev;
+            } else {
+                nodeMap.next.prev = nodeMap.prev;
+                nodeMap.prev.next = nodeMap.next;
+            }
         }
-        hashTable.remove(node);
-        size--;
     }
 }
 

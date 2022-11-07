@@ -59,23 +59,6 @@ public class InMemoryTaskManager implements TaskManager {
         return epicList;
     }
 
-    /**
-     * Метод, генерирующий уникальные идентификаторы для задач
-     * @return id типа int
-     */
-    private int createId() {
-        id++;
-        return id;
-    }
-
-    /**
-     * Метод, создающий задачи
-     * методы createEpic и createSubTask выполнен по аналогии
-     *
-     * @param name наименование задачи
-     * @param details детали задачи
-     * @return объект класса ru.yandex.practicum.tracker.model.Task
-     */
     @Override
     public Task createTask(String name, String details) {
         Task task = new Task(name, details);
@@ -125,12 +108,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    /**
-     * Метод возвращает задачу, а также отмечает ее как "просмотренную"
-     *
-     * @param id идентификационный номер задачи
-     * @return объект класса ru.yandex.practicum.tracker.model.Task
-     */
     @Override
     public Task getTaskById(int id) {
         historyManager.add(tasks.get(id));
@@ -154,14 +131,6 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.put(id, task);
     }
 
-    /**
-     * метод для обновления SubTasks с логикой проверки +\
-     * и изменения статуса эпика
-     *
-     * @param subTask  объект класса ru.yandex.practicum.tracker.model.SubTask
-     * @param epicName название эпика, к которому принадлежит данный subTask
-     * @param id       идентификатор subTask
-     */
     @Override
     public void updateSubTask(SubTask subTask, String epicName, int id) {
         subTask.setId(id);
@@ -226,6 +195,15 @@ public class InMemoryTaskManager implements TaskManager {
             listSubsOfEpic.add(subTasks.get(subId));
         }
         return listSubsOfEpic;
+    }
+
+    /**
+     * Метод, генерирующий уникальные идентификаторы для задач
+     * @return id типа int
+     */
+    private int createId() {
+        id++;
+        return id;
     }
 
 }
