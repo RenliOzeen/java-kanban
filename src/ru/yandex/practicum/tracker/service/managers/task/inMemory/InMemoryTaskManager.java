@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.service.managers.task;
+package ru.yandex.practicum.tracker.service.managers.task.inMemory;
 
 import ru.yandex.practicum.tracker.model.Epic;
 import ru.yandex.practicum.tracker.model.SubTask;
@@ -6,6 +6,7 @@ import ru.yandex.practicum.tracker.model.Task;
 import ru.yandex.practicum.tracker.model.TaskStatus;
 import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
+import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +29,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistoryManager() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    @Override
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
     @Override
@@ -197,13 +203,30 @@ public class InMemoryTaskManager implements TaskManager {
         return listSubsOfEpic;
     }
 
+    @Override
+    public HashMap<Integer, Task> getMapOfTasks() {
+        return tasks;
+    }
+
+    @Override
+    public HashMap<Integer, SubTask> getMapOfSubTasks() {
+        return subTasks;
+    }
+
+    @Override
+    public HashMap<Integer, Epic> getMapOfEpics() {
+        return epics;
+    }
+
     /**
      * Метод, генерирующий уникальные идентификаторы для задач
+     *
      * @return id типа int
      */
     private int createId() {
         id++;
         return id;
     }
+
 
 }

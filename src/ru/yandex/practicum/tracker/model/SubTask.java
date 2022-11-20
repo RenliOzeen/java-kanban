@@ -3,9 +3,9 @@ package ru.yandex.practicum.tracker.model;
 public class SubTask extends Task {
     private int epicId;
 
-
     public SubTask(String name, String details) {
         super(name, details);
+        setType(TaskType.SUBTASK);
 
     }
 

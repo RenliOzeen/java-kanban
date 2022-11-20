@@ -1,0 +1,10 @@
+id,type,name,status,details,epicId
+1,TASK,Погулять с собакой,NEW,Одеться; Выйти с собакой на улицу
+2,TASK,Купить продукты,NEW,Написать список продуктов; Пойти в магазин
+3,EPIC,Получить права,NEW,null
+7,EPIC,Приготовить ужин,NEW,null
+4,SUBTASK,Пройти обучение в автошколе,NEW,null,3
+5,SUBTASK,сдать экзамен,NEW,null,3
+6,SUBTASK,отпраздновать,NEW,null,3
+
+3

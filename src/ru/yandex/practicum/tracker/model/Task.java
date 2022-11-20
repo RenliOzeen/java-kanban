@@ -7,11 +7,13 @@ public class Task {
     private String details;
     private int id;
     private TaskStatus status;
+    private TaskType type;
 
     public Task(String name, String details) {
         this.name = name;
         this.details = details;
         status = TaskStatus.NEW;
+        type = TaskType.TASK;
     }
 
     public String getName() {
@@ -44,6 +46,14 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
     }
 
     @Override

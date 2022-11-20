@@ -83,10 +83,10 @@ public class InMemoryHistoryManager implements HistoryManager {
      * @param node узел типа Node, который необходимо вырезать
      */
     private void removeNode(Node node) {
-        Node nodeMap=hashTable.remove(node.data.getId());
-        if(nodeMap==null){
+        Node nodeMap = hashTable.remove(node.data.getId());
+        if (nodeMap == null) {
             return;
-        } else{
+        } else {
             if (nodeMap.prev == null) {
                 nodeMap.next.prev = null;
                 head = nodeMap.next;

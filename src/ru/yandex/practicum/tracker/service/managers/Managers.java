@@ -2,7 +2,7 @@ package ru.yandex.practicum.tracker.service.managers;
 
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
 import ru.yandex.practicum.tracker.service.managers.history.InMemoryHistoryManager;
-import ru.yandex.practicum.tracker.service.managers.task.InMemoryTaskManager;
+import ru.yandex.practicum.tracker.service.managers.task.inMemory.InMemoryTaskManager;
 import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 
 public class Managers {
