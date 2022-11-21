@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.service.managers.task.fileBacked;
+package ru.yandex.practicum.tracker.exception;
 
 /**
  * Исключение сохранения данных задач/подзадач/эпиков и истории просмотров в файл

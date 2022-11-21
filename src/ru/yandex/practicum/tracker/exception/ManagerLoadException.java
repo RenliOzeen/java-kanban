@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.service.managers.task.fileBacked;
+package ru.yandex.practicum.tracker.exception;
 
 /**
  * Исключение восстановления менеджера из файла

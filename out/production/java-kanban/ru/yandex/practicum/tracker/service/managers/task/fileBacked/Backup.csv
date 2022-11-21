@@ -7,4 +7,4 @@ id,type,name,status,details,epicId
 5,SUBTASK,сдать экзамен,NEW,null,3
 6,SUBTASK,отпраздновать,NEW,null,3
 
-3
+3,5,4,7,1,6,2

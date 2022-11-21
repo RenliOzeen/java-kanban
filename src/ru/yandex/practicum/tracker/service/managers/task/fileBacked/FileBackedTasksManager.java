@@ -1,7 +1,8 @@
 package ru.yandex.practicum.tracker.service.managers.task.fileBacked;
 
+import ru.yandex.practicum.tracker.exception.ManagerLoadException;
+import ru.yandex.practicum.tracker.exception.ManagerSaveException;
 import ru.yandex.practicum.tracker.model.*;
-import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
 import ru.yandex.practicum.tracker.service.managers.task.inMemory.InMemoryTaskManager;
 
 
@@ -46,7 +47,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println("история" + taskManager.getHistory());
 
         FileBackedTasksManager backupManager = new FileBackedTasksManager();
-        backupManager = loadFromFile(backupManager.backupFile);
+        backupManager = backupManager.loadFromFile(backupManager.backupFile);
         System.out.println("Восстановленная история" + backupManager.getHistory());
         System.out.println("Восстановленные таски" + backupManager.getTasks());
         System.out.println("Восстановленные эпики" + backupManager.getEpics());
@@ -150,112 +151,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     /**
-     * Метод для перевода объекта задачи(Task) в строку
-     *
-     * @param task объект типа Task
-     * @return строковое представление задачи
-     */
-    public String taskToString(Task task) {
-        if (task.getType().equals(TaskType.SUBTASK)) {
-            return task.getId() + "," +
-                    task.getType() + "," +
-                    task.getName() + "," +
-                    task.getStatus() + "," +
-                    task.getDetails() + "," +
-                    ((SubTask) task).getEpicId();
-        } else {
-            return task.getId() + "," +
-                    task.getType() + "," +
-                    task.getName() + "," +
-                    task.getStatus() + "," +
-                    task.getDetails();
-        }
-    }
-
-    /**
-     * Метод для обратного преобразования строки в объект задачи(Task)
-     *
-     * @param task задача(Task) в формате строки
-     * @return объект типа Task
-     */
-    public Task taskFromString(String task) {
-        String[] taskParts = task.split(",");
-        if (task.contains("SUBTASK")) {
-            SubTask typeOfTask = new SubTask(taskParts[2], taskParts[4]);
-            typeOfTask.setId(Integer.parseInt(taskParts[0]));
-            typeOfTask.setName(taskParts[2]);
-            typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
-            typeOfTask.setDetails(taskParts[4]);
-            typeOfTask.setEpicId(Integer.parseInt(taskParts[5]));
-            return typeOfTask;
-        } else if (task.contains("EPIC")) {
-            Epic typeOfTask = new Epic(taskParts[2], taskParts[4]);
-            typeOfTask.setId(Integer.parseInt(taskParts[0]));
-            typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
-            return typeOfTask;
-        } else {
-            Task typeOfTask = new Task(taskParts[2], taskParts[4]);
-            typeOfTask.setId(Integer.parseInt(taskParts[0]));
-            typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
-            return typeOfTask;
-        }
-    }
-
-    /**
-     * Метод для преобразования истории просмотров в строку
-     *
-     * @param manager экземпляр менеджера истории просмотров
-     * @return строковое представление(String) истории просмотров
-     */
-    public static String historyToString(HistoryManager manager) {
-        StringBuilder historyRow = new StringBuilder();
-        for (Task task : manager.getHistory()) {
-            if (task == manager.getHistory().get(manager.getHistory().size() - 1)) {
-                historyRow.append(task.getId());
-            } else {
-                historyRow.append(task.getId() + ",");
-            }
-        }
-        return historyRow.toString();
-    }
-
-    /**
-     * Метод для обратного преобразования строки в историю просмотров
-     *
-     * @param value строковое представление истории просмотров
-     * @return List истории просмотров
-     */
-    public static List<Integer> historyFromString(String value) {
-        String[] historyRows = value.split(",");
-        Integer[] historyId = new Integer[historyRows.length];
-        for (int i = 0; i < historyRows.length; i++) {
-            historyId[i] = Integer.parseInt(historyRows[i]);
-        }
-        return List.of(historyId);
-    }
-
-    /**
      * Метод для сохранения задач/подзадач/эпиков и истории просмотров в backup файл
      */
     public void save() {
         try (FileWriter writer = new FileWriter(backupFile)) {
             writer.write("id,type,name,status,details,epicId");
             for (Task task : getTasks()) {
-                String row = taskToString(task);
+                String row = CSVTaskFormatter.taskToString(task);
                 writer.write("\n" + row);
             }
 
             for (Epic task : getEpics()) {
-                String row = taskToString(task);
+                String row = CSVTaskFormatter.taskToString(task);
                 writer.write("\n" + row);
             }
 
             for (SubTask task : getSubTasks()) {
-                String row = taskToString(task);
+                String row = CSVTaskFormatter.taskToString(task);
                 writer.write("\n" + row);
             }
 
-            String history = historyToString(getHistoryManager());
+            String history = CSVTaskFormatter.historyToString(getHistoryManager());
             writer.write("\n\n" + history);
         } catch (IOException exception) {
             throw new ManagerSaveException("Ошибка сохранения в файл");
@@ -269,7 +185,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      * @param file файл backup-а
      * @return восстановленный экземпляр менеджера
      */
-    public static FileBackedTasksManager loadFromFile(File file) {
+    private FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
         String row = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -277,27 +193,39 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 row = reader.readLine();
 
                 if (row.contains("SUBTASK")) {
-                    SubTask task = ((SubTask) fileBackedTasksManager.taskFromString(row));
+                    SubTask task = ((SubTask) CSVTaskFormatter.taskFromString(row));
                     fileBackedTasksManager.getMapOfSubTasks().put(task.getId(), task);
 
                 } else if (row.contains("TASK")) {
-                    Task task = fileBackedTasksManager.taskFromString(row);
+                    Task task = CSVTaskFormatter.taskFromString(row);
                     fileBackedTasksManager.getMapOfTasks().put(task.getId(), task);
 
                 } else if (row.contains("EPIC")) {
-                    Epic task = ((Epic) fileBackedTasksManager.taskFromString(row));
+                    Epic task = ((Epic) CSVTaskFormatter.taskFromString(row));
                     fileBackedTasksManager.getMapOfEpics().put(task.getId(), task);
                 }
 
+
             }
-            List<Integer> taskId = historyFromString(row);
-            for (int id : taskId) {
-                if (fileBackedTasksManager.getTaskById(id) != null) {
-                    fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getTaskById(id));
-                } else if (fileBackedTasksManager.getSubTaskById(id) != null) {
-                    fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getSubTaskById(id));
-                } else {
-                    fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getEpicById(id));
+
+            for(int subId: fileBackedTasksManager.getMapOfSubTasks().keySet()){
+                for( int epicId: fileBackedTasksManager.getMapOfEpics().keySet()){
+                    if(fileBackedTasksManager.getMapOfSubTasks().get(subId).getEpicId()==epicId){
+                        fileBackedTasksManager.getMapOfEpics().get(epicId).getSubTasks().add(subId);
+                    }
+                }
+            }
+
+            if (row != null) {
+                List<Integer> taskId = CSVTaskFormatter.historyFromString(row);
+                for (int id : taskId) {
+                    if (fileBackedTasksManager.getTaskById(id) != null) {
+                        fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getTaskById(id));
+                    } else if (fileBackedTasksManager.getSubTaskById(id) != null) {
+                        fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getSubTaskById(id));
+                    } else {
+                        fileBackedTasksManager.getHistoryManager().getHistory().add(fileBackedTasksManager.getEpicById(id));
+                    }
                 }
             }
 
