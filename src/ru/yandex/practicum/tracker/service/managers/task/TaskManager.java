@@ -43,7 +43,7 @@ public interface TaskManager {
      * @param details - Детали задачи(более подробное описание)
      * @return объект класса ru.yandex.practicum.tracker.model.Task
      */
-    Task createTask(String name, String details);
+    Task createTask(String name, String details, long minutesToComplete, String date);
 
     /**
      * Метод для создания новых эпиков
@@ -60,7 +60,7 @@ public interface TaskManager {
      * @param subTaskName - Название самой подзадачи
      * @return объект класса ru.yandex.practicum.tracker.model.SubTask
      */
-    SubTask createSubTask(String epicName, String subTaskName);
+    SubTask createSubTask(String epicName, String subTaskName, long minutesToComplete, String date);
 
     /**
      * Метод для удаления всех задач(Task)
@@ -164,24 +164,28 @@ public interface TaskManager {
 
     /**
      * Метод для получения экземпляра менеджера истории просмотров
+     *
      * @return экземпляр HistoryManager
      */
     HistoryManager getHistoryManager();
 
     /**
      * Метод для получения мапы задач(Task)
+     *
      * @return HashMap с задачами(Task)
      */
     HashMap<Integer, Task> getMapOfTasks();
 
     /**
      * Метод для получения мапы подзадач(SubTask)
+     *
      * @return HashMap с подзадачами(SubTask)
      */
     HashMap<Integer, SubTask> getMapOfSubTasks();
 
     /**
      * Метод для получения мапы эпиков(Epic)
+     *
      * @return HashMap с эпиками(Epic)
      */
     HashMap<Integer, Epic> getMapOfEpics();

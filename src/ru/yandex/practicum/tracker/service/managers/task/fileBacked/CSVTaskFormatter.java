@@ -3,7 +3,10 @@ package ru.yandex.practicum.tracker.service.managers.task.fileBacked;
 import ru.yandex.practicum.tracker.model.*;
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class CSVTaskFormatter {
 
@@ -20,13 +23,19 @@ public class CSVTaskFormatter {
                     task.getName() + "," +
                     task.getStatus() + "," +
                     task.getDetails() + "," +
-                    ((SubTask) task).getEpicId();
+                    ((SubTask) task).getEpicId() + "," +
+                    task.getStartTime().get() + "," +
+                    task.getEndTime().get() + "," +
+                    task.getDuration().toMinutes();
         } else {
             return task.getId() + "," +
                     task.getType() + "," +
                     task.getName() + "," +
                     task.getStatus() + "," +
-                    task.getDetails();
+                    task.getDetails() + "," +
+                    task.getStartTime().get() + "," +
+                    task.getEndTime().get() + "," +
+                    task.getDuration().toMinutes();
         }
     }
 
@@ -39,7 +48,8 @@ public class CSVTaskFormatter {
     public static Task taskFromString(String task) {
         String[] taskParts = task.split(",");
         if (task.contains("SUBTASK")) {
-            SubTask typeOfTask = new SubTask(taskParts[2], taskParts[4]);
+            SubTask typeOfTask = new SubTask(taskParts[2], taskParts[4],
+            Long.parseLong(taskParts[8]), Optional.of(taskParts[6]));
             typeOfTask.setId(Integer.parseInt(taskParts[0]));
             typeOfTask.setName(taskParts[2]);
             typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
@@ -47,12 +57,15 @@ public class CSVTaskFormatter {
             typeOfTask.setEpicId(Integer.parseInt(taskParts[5]));
             return typeOfTask;
         } else if (task.contains("EPIC")) {
-            Epic typeOfTask = new Epic(taskParts[2], taskParts[4]);
+            Epic typeOfTask = new Epic(taskParts[2], taskParts[4],
+                    Long.parseLong(taskParts[7]), Optional.of(taskParts[5]));
             typeOfTask.setId(Integer.parseInt(taskParts[0]));
             typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
+            typeOfTask.setEndTime(LocalDateTime.parse(taskParts[6], Task.formatter));
             return typeOfTask;
         } else {
-            Task typeOfTask = new Task(taskParts[2], taskParts[4]);
+            Task typeOfTask = new Task(taskParts[2], taskParts[4],
+                    Long.parseLong(taskParts[7]), Optional.of(taskParts[5]));
             typeOfTask.setId(Integer.parseInt(taskParts[0]));
             typeOfTask.setStatus(TaskStatus.valueOf(taskParts[3]));
             return typeOfTask;

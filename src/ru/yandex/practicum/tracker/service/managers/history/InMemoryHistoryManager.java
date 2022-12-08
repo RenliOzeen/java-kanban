@@ -84,7 +84,7 @@ public class InMemoryHistoryManager implements HistoryManager {
      */
     private void removeNode(Node node) {
         Node nodeMap = hashTable.remove(node.data.getId());
-        if (nodeMap == null) {
+        if (nodeMap == null || (nodeMap.prev == null && nodeMap.next == null)) {
             return;
         } else {
             if (nodeMap.prev == null) {

@@ -11,14 +11,15 @@ public class Main {
         TaskManager taskManager = Managers.getDefault();
 
 
-        taskManager.createTask("Погулять с собакой", "Одеться\n Выйти с собакой на улицу");
+        taskManager.createTask("Погулять с собакой", "Одеться\n Выйти с собакой на улицу", 25, "25.08.2022");
 
-        taskManager.createTask("Купить продукты", "Написать список продуктов\n Пойти в магазин");
+        taskManager.createTask("Купить продукты", "Написать список продуктов\n Пойти в магазин", 60, "17.08.2022");
 
         taskManager.createEpic("Получить права");
-        taskManager.createSubTask("Получить права", "Пройти обучение в автошколе");
-        taskManager.createSubTask("Получить права", "сдать экзамен");
-        taskManager.createSubTask("Получить права", "отпраздновать");
+        taskManager.createSubTask("Получить права", "Пройти обучение в автошколе", 1300, "01.09.2022");
+        taskManager.createSubTask("Получить права", "сдать экзамен", 180, "04.09.2022");
+        taskManager.createSubTask("Получить права", "отпраздновать", 120, "11.09.2022");
+
 
         taskManager.createEpic("Приготовить ужин");
 
