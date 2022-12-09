@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.tracker.model.Epic;
 import ru.yandex.practicum.tracker.model.SubTask;
 import ru.yandex.practicum.tracker.model.Task;
-import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 import ru.yandex.practicum.tracker.service.managers.task.fileBacked.FileBackedTasksManager;
 import ru.yandex.practicum.tracker.test.managers.task.TaskManagerTest;
 
@@ -20,9 +19,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     FileBackedTasksManager taskManager = new FileBackedTasksManager();
 
     @Override
-    public TaskManager getType() {
+    public void getType() {
         manager = new FileBackedTasksManager();
-        return manager;
     }
 
     public int fileReader(File file) {
@@ -72,9 +70,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertTrue(FileBackedTasksManager.loadFromFile(taskManager.getBackupFile()).getSubTaskById(4).getEpicId() == 3);
         taskManager.getTaskById(2);
         taskManager.getTaskById(1);
-        taskManager.getEpicById(3);
+        taskManager.getEpicById(4);
         taskManager.getSubTaskById(5);
-        taskManager.getSubTaskById(4);
+        taskManager.getSubTaskById(7);
         taskManager.getSubTaskById(6);
         assertFalse(FileBackedTasksManager.loadFromFile(taskManager.getBackupFile()).getHistory().isEmpty());
     }

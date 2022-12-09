@@ -6,4 +6,4 @@ id,type,name,status,details,epicId,startTime,endTime,duration
 5,SUBTASK,сдать экзамен,NEW,null,3,2022-09-04T12:15,2022-09-04T15:15,180
 6,SUBTASK,отпраздновать,NEW,null,3,2022-09-11T12:15,2022-09-11T14:15,120
 
-2,2,1,3,5,4,6
+2,2,1,5,6
