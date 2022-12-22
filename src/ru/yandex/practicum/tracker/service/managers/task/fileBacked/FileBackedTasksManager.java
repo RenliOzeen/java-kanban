@@ -18,7 +18,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         backupFile = new File("C:\\Users\\lioze_0hcfbk4\\OneDrive\\Desktop\\папка с папками\\Я.П\\dev\\java-kanban\\src\\ru\\yandex\\practicum\\tracker\\service\\managers\\task\\fileBacked\\Backup.csv");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FileBackedTasksManager taskManager = new FileBackedTasksManager();
 
         taskManager.loadFromFile(taskManager.backupFile);

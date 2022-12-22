@@ -1,7 +1,6 @@
 package ru.yandex.practicum.tracker.model;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -117,8 +116,8 @@ public class Task {
                 ", status=" + status +
                 ", type=" + type +
                 ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime.get() +
-                ", endTime=" + getEndTime().get() +
+                ", startTime=" + startTime.orElse(EMPTY_START_TIME_VALUE) +
+                ", endTime=" + getEndTime().orElse(EMPTY_START_TIME_VALUE) +
                 '}';
     }
 }

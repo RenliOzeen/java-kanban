@@ -18,7 +18,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
+    public ArrayList<Task> getHistory() {
         return getTasks();
     }
 
@@ -67,8 +67,8 @@ public class InMemoryHistoryManager implements HistoryManager {
      *
      * @return List<Task>
      */
-    private List<Task> getTasks() {
-        List<Task> historyList = new ArrayList<>();
+    private ArrayList<Task> getTasks() {
+        ArrayList<Task> historyList = new ArrayList<>();
         Node node = head;
         while (node != null) {
             historyList.add(node.data);
@@ -99,6 +99,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
         }
     }
+
 }
 
 

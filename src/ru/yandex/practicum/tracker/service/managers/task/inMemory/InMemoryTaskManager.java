@@ -5,8 +5,8 @@ import ru.yandex.practicum.tracker.model.Epic;
 import ru.yandex.practicum.tracker.model.SubTask;
 import ru.yandex.practicum.tracker.model.Task;
 import ru.yandex.practicum.tracker.model.TaskStatus;
-import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;
+import ru.yandex.practicum.tracker.service.managers.history.InMemoryHistoryManager;
 import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 
 import java.time.Duration;
@@ -19,14 +19,14 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
     private final HashMap<Integer, SubTask> subTasks;
     private final HashMap<Integer, Epic> epics;
-    private final HistoryManager historyManager;
+    private InMemoryHistoryManager historyManager;
 
     public InMemoryTaskManager() {
         id = 0;
         tasks = new HashMap<>();
         subTasks = new HashMap<>();
         epics = new HashMap<>();
-        historyManager = Managers.getDefaultHistory();
+        historyManager = new InMemoryHistoryManager();
     }
 
     @Override
@@ -132,6 +132,7 @@ public class InMemoryTaskManager implements TaskManager {
 
                         }
                     }
+                    subTask.setEpicName(epicName);
                     return subTask;
                 }
             }
@@ -159,6 +160,7 @@ public class InMemoryTaskManager implements TaskManager {
 
             }
         }
+        subTask.setEpicName(epicName);
         return subTask;
     }
 
@@ -370,11 +372,6 @@ public class InMemoryTaskManager implements TaskManager {
         return id;
     }
 
-    /**
-     * Метод для получения списка задач, отсортированных по приоритету
-     *
-     * @return List с объектами типа Task
-     */
     public List<Task> getPrioritizedTasks() {
         TreeSet<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
             if (o1.getStartTime().get().equals(Task.EMPTY_START_TIME_VALUE)) {
@@ -416,6 +413,4 @@ public class InMemoryTaskManager implements TaskManager {
             return true;
         }
     }
-
-
 }

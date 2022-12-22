@@ -190,4 +190,11 @@ public interface TaskManager {
      */
     HashMap<Integer, Epic> getMapOfEpics();
 
+    /**
+     * Метод для получения списка задач, отсортированных по приоритету
+     *
+     * @return List с объектами типа Task
+     */
+    public List<Task> getPrioritizedTasks();
+
 }

@@ -1,97 +1,77 @@
 package ru.yandex.practicum.tracker;
 
+import com.google.gson.Gson;
+import ru.yandex.practicum.tracker.server.kv.server.KVServer;
 import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
+        String key="0";
+        new KVServer().start();
+        Gson gson=new Gson();
         //различные тесты:
-
-        TaskManager taskManager = Managers.getDefault();
-
-
-        taskManager.createTask("Погулять с собакой", "Одеться\n Выйти с собакой на улицу", 25, "25.08.2022");
-
-        taskManager.createTask("Купить продукты", "Написать список продуктов\n Пойти в магазин", 60, "17.08.2022");
-
-        taskManager.createEpic("Получить права");
-        taskManager.createSubTask("Получить права", "Пройти обучение в автошколе", 1300, "01.09.2022");
-        taskManager.createSubTask("Получить права", "сдать экзамен", 180, "04.09.2022");
-        taskManager.createSubTask("Получить права", "отпраздновать", 120, "11.09.2022");
+        TaskManager manager=Managers.getDefault();
+        manager.createTask("task1", null, 2, "2022-09-01T12:15");
+        manager.createTask("task2", null, 2, "2022-08-25T12:19");
 
 
-        taskManager.createEpic("Приготовить ужин");
+        manager.createTask("task3", null, 2, "2022-09-04T12:15");
+        manager.createEpic("Получить права");
+        manager.createSubTask("Получить права", "Пройти обучение в автошколе", 1300, "2022-09-03T12:15");
+        manager.createSubTask("Получить права", "сдать экзамен", 180, "2022-09-07T12:15");
+        manager.createSubTask("Получить права", "отпраздновать", 120, "2022-09-11T12:15");
 
-        System.out.println(taskManager.getEpicById(3));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(5));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(4));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(6));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(6));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(3));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(5));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(4));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(6));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(3));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(5));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(4));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(6));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getSubTaskById(6));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(7));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("история" + taskManager.getHistory());
-        System.out.println(taskManager.getEpicById(3));
-        System.out.println("история" + taskManager.getHistory());
 
-        System.out.println("удаляю таску");
-        taskManager.deleteTaskById(1);
-        System.out.println("история" + taskManager.getHistory());
 
-        System.out.println("Удаляю эпик");
-        taskManager.deleteEpicById(3);
-        System.out.println("история" + taskManager.getHistory());
+        System.out.println(manager.getEpicById(4));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(7));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(6));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(2));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(1));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(6));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(2));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(1));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getEpicById(4));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(7));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(1));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(6));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(2));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getEpicById(4));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(7));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(6));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(2));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getTaskById(1));
+        System.out.println("история" + manager.getHistory());
+        System.out.println(manager.getSubTaskById(6));
+        System.out.println("история" + manager.getHistory());
+
     }
 }
