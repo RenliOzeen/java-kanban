@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.test.model;
+package model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

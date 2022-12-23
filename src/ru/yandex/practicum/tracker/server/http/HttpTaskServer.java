@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class HttpTaskServer {
+    private static final String SUBTASK="subtask";
+    private static final String TASK="task";
+    private static final String EPIC="epic";
+    private static final String HISTORY="history";
+    private static final String PRIORITY="priority";
     private static final int PORT = 8080;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private static final Gson gson = new Gson();
@@ -147,25 +152,25 @@ public class HttpTaskServer {
                 switch (method) {
                     case "GET":
                         if (parts.length == 3 && params.isEmpty()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.GET_TASKS;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.GET_SUBTASKS;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.GET_EPICS;
-                            } else if (parts[2].equals("history")) {
+                            } else if (parts[2].equals(HISTORY)) {
                                 return Endpoint.GET_HISTORY;
-                            } else if (parts[2].equals("priority")) {
+                            } else if (parts[2].equals(PRIORITY)) {
                                 return Endpoint.GET_PRIORITY;
                             } else {
                                 return Endpoint.UNKNOWN;
                             }
                         } else if (parts.length == 3 && params.isPresent()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.GET_TASK_BY_ID;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.GET_SUBTASK_BY_ID;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.GET_EPIC_BY_ID;
                             } else {
                                 return Endpoint.UNKNOWN;
@@ -177,21 +182,21 @@ public class HttpTaskServer {
                         }
                     case "POST":
                         if (parts.length == 3 && params.isEmpty()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.CREATE_TASK;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.CREATE_EPIC;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.CREATE_SUBTASK;
                             } else {
                                 return Endpoint.UNKNOWN;
                             }
                         } else if (parts.length == 3 && params.isPresent()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.UPDATE_TASK;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.UPDATE_SUBTASK;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.UPDATE_EPIC;
                             } else {
                                 return Endpoint.UNKNOWN;
@@ -201,21 +206,21 @@ public class HttpTaskServer {
                         }
                     case "DELETE":
                         if (parts.length == 3 && params.isEmpty()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.DELETE_TASKS;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.DELETE_SUBTASKS;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.DELETE_EPICS;
                             } else {
                                 return Endpoint.UNKNOWN;
                             }
                         } else if (parts.length == 3 && params.isPresent()) {
-                            if (parts[2].equals("task")) {
+                            if (parts[2].equals(TASK)) {
                                 return Endpoint.DELETE_TASK_BY_ID;
-                            } else if (parts[2].equals("subtask")) {
+                            } else if (parts[2].equals(SUBTASK)) {
                                 return Endpoint.DELETE_SUBTASK_BY_ID;
-                            } else if (parts[2].equals("epic")) {
+                            } else if (parts[2].equals(EPIC)) {
                                 return Endpoint.DELETE_EPIC_BY_ID;
                             } else {
                                 return Endpoint.UNKNOWN;

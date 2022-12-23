@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.test.managers.history;
+package managers.history;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

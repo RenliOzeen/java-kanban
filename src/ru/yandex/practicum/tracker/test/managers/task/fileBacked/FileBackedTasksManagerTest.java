@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.test.managers.task.fileBacked;
+package managers.task.fileBacked;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.tracker.model.Epic;

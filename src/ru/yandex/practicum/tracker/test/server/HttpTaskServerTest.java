@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tracker.test.server;
+package server;
 
 import com.google.gson.*;
 import org.junit.jupiter.api.BeforeAll;
