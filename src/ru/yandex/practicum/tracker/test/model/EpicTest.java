@@ -1,4 +1,4 @@
-package model;
+package ru.yandex.practicum.tracker.test.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import ru.yandex.practicum.tracker.model.TaskStatus;
 import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.task.TaskManager;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class EpicTest {
     Epic epic;

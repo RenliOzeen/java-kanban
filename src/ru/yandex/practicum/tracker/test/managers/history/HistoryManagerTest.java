@@ -1,8 +1,7 @@
-package managers.history;
+package ru.yandex.practicum.tracker.test.managers.history;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.tracker.model.Epic;
 import ru.yandex.practicum.tracker.model.Task;
 import ru.yandex.practicum.tracker.service.managers.Managers;
 import ru.yandex.practicum.tracker.service.managers.history.HistoryManager;

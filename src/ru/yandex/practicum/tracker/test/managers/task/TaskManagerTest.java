@@ -1,4 +1,4 @@
-package managers.task;
+package ru.yandex.practicum.tracker.test.managers.task;
 
 
 import org.junit.jupiter.api.BeforeEach;
